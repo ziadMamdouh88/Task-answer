@@ -1,0 +1,44 @@
+import unittest
+import json
+from app import app
+
+class TestFlaskAPI(unittest.TestCase):
+    
+    def setUp(self):
+        app.testing = True
+        self.app = app.test_client()
+
+    def test_create_test_case(self):
+        data = {
+            'name': 'Test Case 1',
+            'description': 'Description for Test Case 1'
+        }
+        response = self.app.post('/test_cases', json=data)
+        self.assertEqual(response.status_code, 201)
+
+    def test_get_all_test_cases(self):
+        response = self.app.get('/test_cases')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.get_data(as_text=True))
+        self.assertIsInstance(data['test_cases'], list)
+
+    def test_get_test_case(self):
+        response = self.app.get('/test_cases/1')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.get_data(as_text=True))
+        self.assertIn('name', data['test_case'])
+
+    def test_update_test_case(self):
+        data = {
+            'name': 'Updated Test Case',
+            'description': 'Updated Description'
+        }
+        response = self.app.put('/test_cases/1', json=data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_test_case(self):
+        response = self.app.delete('/test_cases/1')
+        self.assertEqual(response.status_code, 200)
+
+if _name_ == '_main_':
+    unittest.main()
