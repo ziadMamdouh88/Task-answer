@@ -6,7 +6,7 @@ Across multiple test assets, with data stored in a SQLite database.*/
 from flask import Flask, request, jsonify
 import sqlite3
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 # SQLite database setup
 conn = sqlite3.connect('test_cases.db')
@@ -95,5 +95,5 @@ def delete_test_case(test_case_id):
 # Recording the execution result of a test case for a specific test asset
 # Retrieving the execution results of all test cases for a specific test asset
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     app.run(debug=True)
